@@ -2,17 +2,33 @@
 
 Configure and toggle listchars easily
 
-## Usage
+![example](https://user-images.githubusercontent.com/116293603/225258794-e083246c-4262-474e-b68d-827da4d17fe0.gif)
 
-Example config
+## Installation
+
+### Packer
+
+```lua
+use "fraso-dev/nvim-listchars"
+```
+
+### Lazy
+
+```lua
+{ 'fraso-dev/nvim-listchars' }
+```
+
+## Configuration
+
+Example configuration
 
 ```lua
 require("nvim-listchars").setup({
-		enable = true, -- enables listchars
-		listchars = { -- default chars (:help listchars for additional info)
-		trail = '-',
-		eol = '↲',
-		tab = '» ',
+        enable = true, -- enables listchars
+        listchars = { -- default chars (:help listchars for additional info)
+	    trail = '-',
+	    eol = '↲',
+	    tab = '» ',
 	}
 })
 ```
