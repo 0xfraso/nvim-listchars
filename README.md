@@ -52,8 +52,8 @@ vim.g.listchar_enabled = false
 
 ## Notes
 
-If you want to enable `tab` chars you must enable `expandtab`:
+If you want to enable `tab` chars you must disable `expandtab`:
 
 ```lua
-vim.opt.expandtab = true
+vim.opt.expandtab = false
 ```
