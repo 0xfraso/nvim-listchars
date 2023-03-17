@@ -15,7 +15,7 @@ use "fraso-dev/nvim-listchars"
 ### Lazy
 
 ```lua
-{ 'fraso-dev/nvim-listchars' }
+{ "fraso-dev/nvim-listchars" }
 ```
 
 ## Configuration
@@ -24,11 +24,11 @@ Example configuration
 
 ```lua
 require("nvim-listchars").setup({
-        enable = true, -- enables listchars
-        listchars = { -- default chars (:help listchars for additional info)
-	    trail = '-',
-	    eol = '↲',
-	    tab = '» ',
+  enable = true, -- enables listchars
+  listchars = { -- default chars (:help listchars for additional info)
+    trail = "-",
+    eol = "↲",
+    tab = "» ",
 	}
 })
 ```
