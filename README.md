@@ -28,7 +28,7 @@ require("nvim-listchars").setup({
   listchars = { -- default chars (:help listchars for additional info)
     trail = "-",
     eol = "↲",
-    tab = "» ",
+    tab = "» "
 	}
 })
 ```
