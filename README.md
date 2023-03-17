@@ -25,6 +25,7 @@ Defaults
 ```lua
 require("nvim-listchars").setup({
   enable = true,
+  save_state = true, -- save toggle state
   listchars = {
     tab = "> ",
     trail = "-",
@@ -38,6 +39,7 @@ Example configuration with updated preferences
 ```lua
 require("nvim-listchars").setup({
   enable = true,
+  save_state = false, -- do not save toggle state
   listchars = {
     trail = "-",
     eol = "↲",
@@ -47,12 +49,6 @@ require("nvim-listchars").setup({
 ```
 
 You can find the complete list of available chars by running `:help listchars`
-
-### Disable by default
-
-```lua
-vim.g.listchar_enabled = false
-```
 
 ## Commands
 
