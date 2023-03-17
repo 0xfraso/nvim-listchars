@@ -14,4 +14,3 @@
 ---@class PluginConfig
 ---@field enable boolean
 ---@field listchars table<ListType, string>
-

@@ -3,15 +3,15 @@
 ---@class NvimListchars
 ---@field private resolved_config PluginConfig
 local M = {
-  ---Configuration the plugin will use
-  resolved_config = {
-    enable = true,
-    listchars = {
-      tab = vim.opt.listchars:get()["tab"],
-      trail = vim.opt.listchars:get()["trail"],
-      nbsp = vim.opt.listchars:get()["nbsp"],
-    },
-  },
+	---Configuration the plugin will use
+	resolved_config = {
+		enable = true,
+		listchars = {
+			tab = vim.opt.listchars:get()["tab"],
+			trail = vim.opt.listchars:get()["trail"],
+			nbsp = vim.opt.listchars:get()["nbsp"],
+		},
+	},
 }
 
 ---Plugin configuration bootstrapper
