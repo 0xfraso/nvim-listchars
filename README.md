@@ -24,12 +24,12 @@ Defaults
 
 ```lua
 require("nvim-listchars").setup({
-	enable = true,
-	listchars = {
-		tab = "> ",
-		trail = "-",
-		nbsp = "+",
-	},
+  enable = true,
+  listchars = {
+    tab = "> ",
+    trail = "-",
+    nbsp = "+",
+  },
 })
 ```
 
@@ -37,12 +37,12 @@ Example configuration with updated preferences
 
 ```lua
 require("nvim-listchars").setup({
-	enable = true,
-	listchars = {
-		trail = "-",
-		eol = "↲",
-		tab = "» ",
-	},
+  enable = true,
+  listchars = {
+    trail = "-",
+    eol = "↲",
+    tab = "» ",
+  },
 })
 ```
 
