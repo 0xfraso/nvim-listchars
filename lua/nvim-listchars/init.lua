@@ -1,5 +1,5 @@
 local api = vim.api
-local uv = vim.loop
+local cache = require("nvim-listchars.cache")
 
 ---@module "nvim-listchars.types"
 
@@ -18,50 +18,15 @@ local M = {
 	},
 }
 
-local cache_path = vim.fn.stdpath("data") .. "/nvim-listchar"
-
----Open the file where the toggle flag is saved.
----See `:h uv.fs_open()` for a better description of parameters.
----
----@param mode string r for read, w for write
----@return integer|nil fd
-local open_cache_file = function(mode)
-	--- 438(10) == 666(8) [owner/group/others can read/write]
-	local flags = 438
-	local fd, err = uv.fs_open(cache_path, mode, flags)
-	if err then
-		api.nvim_notify(("Error opening cache file:\n\n%s"):format(err), vim.log.levels.ERROR, {})
-	end
-	return fd
-end
-
----Reads the cache to find the the last toggle flag.
----
----@return boolean|nil enabled
-local read_cache_file = function()
-	local fd = open_cache_file("r")
-	if not fd then
-		return nil
-	end
-
-	local stat = assert(uv.fs_fstat(fd))
-	local data = assert(uv.fs_read(fd, stat.size, -1))
-	assert(uv.fs_close(fd))
-
-	local enabled, _ = data:gsub("[\n\r]", "")
-	return enabled == "true"
+if M.resolved_config.enable and M.resolved_config.save_state then
+	local save_state = cache.read()
+	vim.g.listchar_enabled = save_state
 end
 
 ---Plugin configuration bootstrapper
 ---@param opts? PluginConfig
 M.setup = function(opts)
 	M.resolved_config = vim.tbl_deep_extend("force", M.resolved_config, opts or {})
-
-	---Read cache file if enabled
-	if M.resolved_config.enable and M.resolved_config.save_state then
-		local save_state = read_cache_file()
-		vim.g.listchar_enabled = save_state
-	end
 
 	if vim.g.listchar_enabled == nil then
 		vim.g.listchar_enabled = M.resolved_config.enable
@@ -97,16 +62,7 @@ M.toggle_listchars = function(switch)
 	if vim.g.listchar_enabled then
 		vim.opt.listchars:append(M.resolved_config.listchars)
 	end
-
-	---Write to cache file
-	local fd = open_cache_file("w")
-	if not fd then
-		api.nvim_notify("Could not write cache file!\n\n", vim.log.levels.ERROR, {})
-		return
-	end
-
-	assert(uv.fs_write(fd, ("%s\n"):format(vim.g.listchar_enabled), -1))
-	assert(uv.fs_close(fd))
+	cache.write()
 end
 
 return M
