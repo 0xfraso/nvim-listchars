@@ -15,6 +15,7 @@ local M = {
 			trail = vim.opt.listchars:get()["trail"],
 			nbsp = vim.opt.listchars:get()["nbsp"],
 		},
+		exclude_filetypes = {},
 	},
 }
 
@@ -63,6 +64,18 @@ M.toggle_listchars = function(switch)
 		vim.opt.listchars:append(M.resolved_config.listchars)
 	end
 	cache.write()
+
+	if next(M.resolved_config.exclude_filetypes) ~= nil then
+		vim.api.nvim_create_autocmd("BufEnter", {
+			desc = "disable listchars on specific filetype",
+			group = vim.api.nvim_create_augroup("listchars_filetypes", { clear = true }),
+			callback = function(o)
+				if vim.tbl_contains(M.resolved_config.exclude_filetypes, vim.bo[o.buf].filetype) then
+					vim.opt.list = false
+				end
+			end,
+		})
+	end
 end
 
 return M

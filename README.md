@@ -20,11 +20,12 @@ use "fraso-dev/nvim-listchars"
 
 ## ⚙️ Configuration
 
-| Property         | Type                 | Description                                                                                                                                                                                                                                                                    |
-| ---------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **enable**       | `boolean?`           | Enable/disable listchars.                                                                                                                                                                                                                                                      |
-| **save_state**   | `boolean?`           | Plugin's default behavior is to save toggled state in a cache file. This way you can keep list on/off across neovim sessions when toggling. If you want to disable this behavior you can set it to `false`. Needs `enable` set to `true`                                       |
-| **listchars**    | `table`              | The list of chars to be displayed. You can find the complete list of available chars by running `:help listchars`                                                                                                                                                              |
+| Property                 | Type           | Description                                                                                                                                                                                                                                                     |
+| ----------------         | ---------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **enable**               | `boolean?`     | Enable/disable listchars.                                                                                                                                                                                                                                       |
+| **save_state**           | `boolean?`     | Plugin's default behavior is to save toggled state in a cache file. This way you can keep list on/off across neovim sessions when toggling. If you want to disable this behavior you can set it to `false`. Needs `enable` set to `true`                        |
+| **listchars**            | `table`        | The list of chars to be displayed. You can find the complete list of available chars by running `:help listchars`                                                                                                                                               |
+| **exclude_filetypes**    | `string[]`     | The list of filetypes on which listchars will be excluded.                                                                                                                                                                                                      |
 
 Defaults
 
@@ -51,6 +52,9 @@ require("nvim-listchars").setup({
     eol = "↲",
     tab = "» ",
   },
+  exclude_filetypes = {
+    "markdown"
+  }
 })
 ```
 

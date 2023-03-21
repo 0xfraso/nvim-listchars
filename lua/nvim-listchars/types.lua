@@ -15,3 +15,4 @@
 ---@field enable boolean
 ---@field save_state boolean
 ---@field listchars table<ListType, string>
+---@field exclude_filetypes string[]
