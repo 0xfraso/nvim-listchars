@@ -6,56 +6,74 @@ Configure and toggle listchars easily
 
 ## 📦 Installation
 
+### Lazy (recommended)
+
+#### With defaults
+
+```lua
+{ "fraso-dev/nvim-listchars", config = true }
+```
+
 ### Packer
 
-```lua
-use "fraso-dev/nvim-listchars"
-```
-
-### Lazy
+#### With defaults
 
 ```lua
-{ "fraso-dev/nvim-listchars" }
+use {
+  "fraso-dev/nvim-listchars",
+  config = function()
+    require("nvim-listchars").setup()
+  end
+}
 ```
+
+### Enable `listchars`
+
+In order to display `listchars` by default,
+you must enable them somewhere in your `init.lua` **before** loading the plugin.
+
+```lua
+vim.opt.list = true
+```
+
+If you simply want to see `listchars` when needed,
+you can toggle them ON/OFF with the command `:ListcharsToggle`.
 
 ## ⚙️ Configuration
 
-| Property                 | Type           | Description                                                                                                                                                                                                                                                     |
-| ----------------         | ---------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **enable**               | `boolean?`     | Enable/disable listchars.                                                                                                                                                                                                                                       |
-| **save_state**           | `boolean?`     | Plugin's default behavior is to save toggled state in a cache file. This way you can keep list on/off across neovim sessions when toggling. If you want to disable this behavior you can set it to `false`. Needs `enable` set to `true`                        |
-| **listchars**            | `table`        | The list of chars to be displayed. You can find the complete list of available chars by running `:help listchars`                                                                                                                                               |
-| **exclude_filetypes**    | `string[]`     | The list of filetypes on which listchars will be excluded.                                                                                                                                                                                                      |
-
-Defaults
+### Defaults
 
 ```lua
-require("nvim-listchars").setup({
-  enable = true,
-  save_state = true,
-  listchars = {
+{
+  save_state = true,      -- If enabled, save toggled state in a cache file. Will overwrite current `vim.opt.list` value.
+  listchars = {           -- `listchars` to be displayed. See available options by running `:help listchars`
     tab = "> ",
     trail = "-",
     nbsp = "+",
   },
-})
+  exclude_filetypes = {}, -- List of filetypes where `listchars` is disabled
+}
 ```
 
-Example configuration with updated preferences
+### Example with updated preferences
 
 ```lua
-require("nvim-listchars").setup({
-  enable = true,
-  save_state = false,
-  listchars = {
-    trail = "-",
-    eol = "↲",
-    tab = "» ",
-  },
-  exclude_filetypes = {
-    "markdown"
-  }
-})
+{
+  "fraso-dev/nvim-listchars",
+  config = function()
+    require("nvim-listchars").setup({
+      save_state = false,
+      listchars = {
+        trail = "-",
+        eol = "↲",
+        tab = "» ",
+      },
+      exclude_filetypes = {
+        "markdown"
+      }
+    })
+  end,
+}
 ```
 
 You can find the complete list of available chars by running `:help listchars`
