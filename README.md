@@ -6,6 +6,16 @@ Configure and toggle listchars easily
 
 ## 📦 Installation
 
+In order to display `listchars` by default,
+you must enable them somewhere in your `init.lua` **before** loading the plugin.
+
+```lua
+vim.opt.list = true
+```
+
+If you simply want to display `listchars` when needed,
+you can toggle them ON/OFF with the command `:ListcharsToggle`.
+
 ### Lazy (recommended)
 
 #### With defaults
@@ -27,26 +37,14 @@ use {
 }
 ```
 
-### Enable `listchars`
-
-In order to display `listchars` by default,
-you must enable them somewhere in your `init.lua` **before** loading the plugin.
-
-```lua
-vim.opt.list = true
-```
-
-If you simply want to see `listchars` when needed,
-you can toggle them ON/OFF with the command `:ListcharsToggle`.
-
 ## ⚙️ Configuration
 
 ### Defaults
 
 ```lua
 {
-  save_state = true,      -- If enabled, save toggled state in a cache file. Will overwrite current `vim.opt.list` value.
-  listchars = {           -- `listchars` to be displayed. See available options by running `:help listchars`
+  save_state = true, -- If enabled, save toggled state in a cache file. Will overwrite current `vim.opt.list` value.
+  listchars = { -- `listchars` to be displayed. See available options by running `:help listchars`
     tab = "> ",
     trail = "-",
     nbsp = "+",
