@@ -8,7 +8,6 @@ local cache = require("nvim-listchars.cache")
 local M = {
 	---Configuration the plugin will use
 	resolved_config = {
-		enable = true,
 		save_state = true,
 		listchars = {
 			tab = vim.opt.listchars:get()["tab"],
@@ -19,48 +18,50 @@ local M = {
 	},
 }
 
-if M.resolved_config.enable and M.resolved_config.save_state then
-	local save_state = cache.read()
-	vim.g.listchar_enabled = save_state
+---Create user commands belonging to this plugin
+local function create_user_commands()
+	api.nvim_create_user_command("ListcharsStatus", M.recall, { desc = "Prints listchars table" })
+	api.nvim_create_user_command("ListcharsToggle", function()
+		M.toggle_listchars()
+	end, { desc = "Toggle listchars ON/OFF" })
+	api.nvim_create_user_command("ListcharsDisable", function()
+		M.toggle_listchars(false)
+	end, { desc = "Disable listchars" })
+	api.nvim_create_user_command("ListcharsEnable", function()
+		M.toggle_listchars(true)
+	end, { desc = "Enable listchars" })
 end
 
 ---Plugin configuration bootstrapper
 ---@param opts? PluginConfig
-M.setup = function(opts)
+function M.setup(opts)
 	M.resolved_config = vim.tbl_deep_extend("force", M.resolved_config, opts or {})
 
-	if vim.g.listchar_enabled == nil then
-		vim.g.listchar_enabled = M.resolved_config.enable
+	if M.resolved_config.save_state then
+		local save_state = cache.read()
+		M.toggle_listchars(save_state)
 	end
 
-	M.toggle_listchars(vim.g.listchar_enabled)
-
-	api.nvim_create_user_command("ListcharsStatus", function(_)
-		print(M.recall())
-	end, { desc = "Prints listchars table" })
+	create_user_commands()
 end
 
 ---Print plugin state
-M.recall = function()
-	if vim.g.listchar_enabled then
-		print("Listchars enabled", vim.inspect(vim.opt.listchars:get()))
+function M.recall()
+	if vim.opt.list:get() then
+		vim.notify(("Listchars enabled %s"):format(vim.inspect(vim.opt.listchars:get())), vim.log.levels.INFO)
 	else
-		print("Listchars disabled")
+		vim.notify("Listchars disabled", vim.log.levels.INFO)
 	end
 end
 
 ---Toggle plugin ON/OFF
 ---@param switch? boolean
-M.toggle_listchars = function(switch)
-	if switch == nil then
-		vim.g.listchar_enabled = not vim.g.listchar_enabled
-	else
-		vim.g.listchar_enabled = switch
-	end
+function M.toggle_listchars(switch)
+	local resolved_switch = switch or not vim.opt.list:get()
+	vim.opt.list = resolved_switch
+	vim.notify(("listchars toggled %s"):format(resolved_switch and "ON" or "OFF"), vim.log.levels.INFO)
 
-	vim.opt.list = vim.g.listchar_enabled
-
-	if vim.g.listchar_enabled then
+	if vim.opt.list:get() then
 		vim.opt.listchars:append(M.resolved_config.listchars)
 	end
 	cache.write()
