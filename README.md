@@ -1,6 +1,6 @@
 # nvim-listchars
 
-Configure and toggle listchars easily
+Easily configure and toggle listchars
 
 ![example](https://user-images.githubusercontent.com/116293603/225258794-e083246c-4262-474e-b68d-827da4d17fe0.gif)
 
@@ -83,6 +83,7 @@ You can find the complete list of available chars by running `:help listchars`
 :ListcharsToggle
 :ListcharsDisable
 :ListcharsEnable
+:ListcharsClearCache
 ```
 
 ## Notes
