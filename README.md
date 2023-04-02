@@ -50,6 +50,7 @@ use {
     nbsp = "+",
   },
   exclude_filetypes = {}, -- List of filetypes where `listchars` is disabled
+  lighten_step = 5, -- Amount to add/remove from base color
 }
 ```
 
@@ -68,7 +69,8 @@ use {
       },
       exclude_filetypes = {
         "markdown"
-      }
+      },
+      lighten_step = 10,
     })
   end,
 }
@@ -84,6 +86,8 @@ You can find the complete list of available chars by running `:help listchars`
 :ListcharsDisable
 :ListcharsEnable
 :ListcharsClearCache
+:ListcharsLightenColors
+:ListcharsDarkenColors
 ```
 
 ## Notes
