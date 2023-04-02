@@ -21,6 +21,12 @@ local function create_user_commands()
 	vim.api.nvim_create_user_command("ListcharsClearCache", function()
 		cache.clear()
 	end, { desc = "Clear nvim-listchars state cache" })
+	vim.api.nvim_create_user_command("ListcharsLightenColors", function()
+		api.lighten_colors(config_mgr.config.lighten_step)
+	end, { desc = "Lighten listchar colors" })
+	vim.api.nvim_create_user_command("ListcharsDarkenColors", function()
+		api.lighten_colors(-config_mgr.config.lighten_step)
+	end, { desc = "Darken listchar colors" })
 end
 
 ---Create autocmds belonging to this plugin
@@ -40,7 +46,7 @@ end
 ---Setup NvimListchars
 ---@param opts? PluginConfig
 function M.setup(opts)
-  config_mgr.setup(opts)
+	config_mgr.setup(opts)
 
 	if vim.opt.list:get() and config_mgr.config.save_state then
 		local save_state = cache.read()
