@@ -4,13 +4,34 @@ local util = require("nvim-listchars.util")
 
 local M = {}
 
----Print `listchars` state and their values
+---Print `listchars` state, their values and current highlights
 function M.recall()
 	if vim.opt.list:get() then
-		vim.notify(("Listchars enabled %s"):format(vim.inspect(vim.opt.listchars:get())), vim.log.levels.INFO)
+		vim.notify(
+			("Listchars enabled %s" .. string.char(10) .. "Current highlights: %s")
+			:format(vim.inspect(vim.opt.listchars:get()), vim.inspect(M.get_highlights())),
+			vim.log.levels.INFO
+		)
 	else
 		vim.notify("Listchars disabled", vim.log.levels.INFO)
 	end
+end
+
+function M.get_highlights()
+	local whitespace_hl = vim.api.nvim_get_hl_by_name("Whitespace", true)
+	local whitespace_fg = string.format("#%06x", whitespace_hl["foreground"])
+
+	local nontext_hl = vim.api.nvim_get_hl_by_name("NonText", true)
+	local nontext_fg = string.format("#%06x", nontext_hl["foreground"])
+
+	return {
+		Whitespace = {
+			fg = whitespace_fg
+		},
+		NonText = {
+			fg = nontext_fg
+		}
+	}
 end
 
 ---Toggle plugin ON/OFF
@@ -29,19 +50,15 @@ end
 
 ---@param amount number
 function M.lighten_colors(amount)
-	local whitespace_hl = vim.api.nvim_get_hl_by_name("Whitespace", true)
-	local whitespace_fg = string.format("#%06x", whitespace_hl["foreground"])
-
-	local nontext_hl = vim.api.nvim_get_hl_by_name("NonText", true)
-	local nontext_fg = string.format("#%06x", nontext_hl["foreground"])
+	local highlights = M.get_highlights()
 
 	local new_highlights = {
 		Whitespace = {
-			fg = util.lighten(whitespace_fg, amount),
+			fg = util.lighten(highlights.Whitespace["fg"], amount),
 		},
 		NonText = {
-			fg = util.lighten(nontext_fg, amount),
-		},
+			fg = util.lighten(highlights.NonText["fg"], amount),
+		}
 	}
 
 	for group, hl in pairs(new_highlights) do
