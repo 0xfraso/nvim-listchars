@@ -16,6 +16,7 @@
 ---@field listchars table<ListType, string>
 ---@field exclude_filetypes string[]
 ---@field lighten_step number
+---@field notifications boolean
 
 ---@type PluginConfig
 local DEFAULTS = {
@@ -27,6 +28,7 @@ local DEFAULTS = {
 	},
 	exclude_filetypes = {},
 	lighten_step = 5,
+	notifications = true,
 }
 
 ---@class ConfigMgr

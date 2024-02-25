@@ -39,7 +39,9 @@ end
 function M.toggle_listchars(switch)
 	local resolved_switch = switch or not vim.opt.list:get()
 	vim.opt.list = resolved_switch
-	vim.notify(("listchars toggled %s"):format(resolved_switch and "ON" or "OFF"), vim.log.levels.INFO)
+	if config_mgr.config.notifications then
+		vim.notify(("listchars toggled %s"):format(resolved_switch and "ON" or "OFF"), vim.log.levels.INFO)
+	end
 
 	if resolved_switch then
 		vim.opt.listchars:append(config_mgr.config.listchars)
