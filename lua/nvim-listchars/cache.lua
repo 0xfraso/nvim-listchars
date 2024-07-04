@@ -21,19 +21,20 @@ end
 
 ---Reads the cache to find the the last toggle flag.
 ---
----@return boolean|nil enabled
+---@return table|nil enabled
 function M.read()
-	local fd = open("r")
-	if not fd then
+	local file = io.open(cache_path)
+	if file then
+		local lines = {}
+		for line in file:lines() do
+			table.insert(lines, line)
+		end
+		file:close()
+		return lines
+	else
+		print("Error opening file:", cache_path)
 		return nil
 	end
-
-	local stat = assert(uv.fs_fstat(fd))
-	local data = assert(uv.fs_read(fd, stat.size, -1))
-	assert(uv.fs_close(fd))
-
-	local enabled, _ = data:gsub("[\n\r]", "")
-	return enabled == "enabled"
 end
 
 ---Get human-readable string representing `listchars` status
@@ -45,14 +46,22 @@ end
 
 ---Save the given toggle flag to cache
 ---@param listchars_enabled boolean
-function M.write(listchars_enabled)
+---@param hl string
+function M.write(listchars_enabled, hl)
+	hl = hl or nil
 	local fd = open("w")
 	if not fd then
 		vim.notify("Could not write cache file!\n\n", vim.log.levels.ERROR)
 		return
 	end
 
-	assert(uv.fs_write(fd, ("%s\n"):format(get_status_string(listchars_enabled)), -1))
+	local blob = get_status_string(listchars_enabled)
+
+	if hl and listchars_enabled then
+		blob = blob .. "\n" .. hl
+	end
+
+	assert(uv.fs_write(fd, ("%s\n"):format(blob), -1))
 	assert(uv.fs_close(fd))
 end
 

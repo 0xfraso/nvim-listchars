@@ -21,7 +21,7 @@ you can toggle them ON/OFF with the command `:ListcharsToggle`.
 #### With defaults
 
 ```lua
-{ "fraso-dev/nvim-listchars", config = true }
+{ "fraso-dev/nvim-listchars", opts = true }
 ```
 
 ### Packer
@@ -43,14 +43,15 @@ use {
 
 ```lua
 {
-  save_state = true, -- If enabled, save toggled state in a cache file. Will overwrite current `vim.opt.list` value.
-  listchars = { -- `listchars` to be displayed. See available options by running `:help listchars`
+  save_state = true,      -- If enabled, save toggled state in a cache file. Will overwrite current `vim.opt.list` value.
+  listchars = {           -- `listchars` to be displayed. See available options by running `:help listchars`
     tab = "> ",
     trail = "-",
     nbsp = "+",
   },
+  notifications = true,   -- Enable or disable listchars notifications
   exclude_filetypes = {}, -- List of filetypes where `listchars` is disabled
-  lighten_step = 5, -- Amount to add/remove from base color
+  lighten_step = 5,       -- Amount to add/remove from base color
 }
 ```
 
@@ -59,6 +60,7 @@ use {
 ```lua
 {
   "fraso-dev/nvim-listchars",
+  event = "BufEnter",
   config = function()
     require("nvim-listchars").setup({
       save_state = false,
@@ -66,7 +68,9 @@ use {
         trail = "-",
         eol = "↲",
         tab = "» ",
+        space = "·",
       },
+      notifications = true,
       exclude_filetypes = {
         "markdown"
       },

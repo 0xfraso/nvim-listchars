@@ -35,19 +35,22 @@ function M.get_highlights()
 end
 
 ---Toggle plugin ON/OFF
----@param switch? boolean
-function M.toggle_listchars(switch)
-	local resolved_switch = switch or not vim.opt.list:get()
+---@param state? table
+function M.toggle_listchars(state)
+	local enabled = state and state[1]
+	local hl = state and state[2] or M.get_highlights()["Whitespace"]["fg"]
+	local resolved_switch = enabled == "enabled" or not vim.opt.list:get()
 	vim.opt.list = resolved_switch
 	if config_mgr.config.notifications then
 		vim.notify(("listchars toggled %s"):format(resolved_switch and "ON" or "OFF"), vim.log.levels.INFO)
 	end
-
 	if resolved_switch then
 		vim.opt.listchars:append(config_mgr.config.listchars)
 	end
+	vim.api.nvim_set_hl(0, "Whitespace", { fg = hl })
+	vim.api.nvim_set_hl(0, "NonText", { fg = hl })
 
-	cache.write(resolved_switch)
+	cache.write(resolved_switch, hl)
 end
 
 ---@param amount number
@@ -66,6 +69,8 @@ function M.lighten_colors(amount)
 	for group, hl in pairs(new_highlights) do
 		vim.api.nvim_set_hl(0, group, hl)
 	end
+
+	cache.write(vim.opt.list:get(), M.get_highlights()["Whitespace"]["fg"])
 end
 
 return M
