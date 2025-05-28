@@ -21,7 +21,7 @@ you can toggle them ON/OFF with the command `:ListcharsToggle`.
 #### With defaults
 
 ```lua
-{ "fraso-dev/nvim-listchars", opts = true }
+{ "0xfraso/nvim-listchars", opts = true }
 ```
 
 ### Packer
@@ -30,7 +30,7 @@ you can toggle them ON/OFF with the command `:ListcharsToggle`.
 
 ```lua
 use {
-  "fraso-dev/nvim-listchars",
+  "0xfraso/nvim-listchars",
   config = function()
     require("nvim-listchars").setup()
   end
@@ -59,7 +59,7 @@ use {
 
 ```lua
 {
-  "fraso-dev/nvim-listchars",
+  "0xfraso/nvim-listchars",
   event = "BufEnter",
   config = function()
     require("nvim-listchars").setup({
