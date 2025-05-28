@@ -37,20 +37,40 @@ end
 ---Toggle plugin ON/OFF
 ---@param state? table
 function M.toggle_listchars(state)
-	local enabled = state and state[1]
+	local command_type = state and state[1]
 	local hl = state and state[2] or M.get_highlights()["Whitespace"]["fg"]
-	local resolved_switch = enabled == "enabled" or not vim.opt.list:get()
-	vim.opt.list = resolved_switch
-	if config_mgr.config.notifications then
-		vim.notify(("listchars toggled %s"):format(resolved_switch and "ON" or "OFF"), vim.log.levels.INFO)
+	local current_list_value = vim.opt.list:get()
+
+	local new_list_state
+
+	if command_type == "enabled" then
+		new_list_state = true
+	elseif command_type == "disabled" then
+		new_list_state = false
+	else
+		new_list_state = not current_list_value
 	end
-	if resolved_switch then
+
+	vim.opt.list = new_list_state
+
+	if config_mgr.config.notifications then
+		local msg
+		if command_type == "enabled" then
+			msg = "listchars enabled"
+		elseif command_type == "disabled" then
+			msg = "listchars disabled"
+		else
+			msg = ("listchars toggled %s"):format(new_list_state and "ON" or "OFF")
+		end
+		vim.notify(msg, vim.log.levels.INFO)
+	end
+	if new_list_state then
 		vim.opt.listchars:append(config_mgr.config.listchars)
 	end
 	vim.api.nvim_set_hl(0, "Whitespace", { fg = hl })
 	vim.api.nvim_set_hl(0, "NonText", { fg = hl })
 
-	cache.write(resolved_switch, hl)
+	cache.write(new_list_state, hl)
 end
 
 ---@param amount number
